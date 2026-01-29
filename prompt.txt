@@ -1,0 +1,111 @@
+CONCERNS AND IMPROVEMENTS
+========================
+
+This document explains the non-obvious concerns and improvements
+applied to the receipt tracking database schema to make it suitable
+as the foundation of a real web application.
+
+------------------------------------------------------------
+1. MULTI-USER DATA ISOLATION
+------------------------------------------------------------
+Concern:
+Without database-level enforcement, users could accidentally
+read or modify other users' receipts.
+
+Improvement:
+PostgreSQL Row Level Security (RLS) is enabled on the receipts table.
+Each query is automatically filtered by the current user ID.
+
+This prevents data leaks even in case of application bugs.
+
+------------------------------------------------------------
+2. USER-SCOPED CATEGORIES
+------------------------------------------------------------
+Concern:
+Global categories cause conflicts in multi-user systems
+(e.g., deleting or renaming "Coffee" affects all users).
+
+Improvement:
+Categories belong to a user via user_id.
+Category names are unique per user.
+
+------------------------------------------------------------
+3. CURRENCY CONSISTENCY
+------------------------------------------------------------
+Concern:
+Aggregating receipts with mixed currencies produces incorrect totals.
+
+Improvement:
+Each user has a default currency.
+Receipts explicitly store currency.
+Cross-currency aggregation must be handled consciously.
+
+------------------------------------------------------------
+4. DATA INTEGRITY FOR MONEY
+------------------------------------------------------------
+Concern:
+Floating-point values and missing constraints can corrupt financial data.
+
+Improvement:
+NUMERIC types are used for all monetary values.
+Constraints enforce:
+- quantity > 0
+- unit_price >= 0
+- total_amount = quantity * unit_price
+
+------------------------------------------------------------
+5. RECEIPT IMMUTABILITY & AUDITABILITY
+------------------------------------------------------------
+Concern:
+Silent edits make historical data unreliable.
+
+Improvement:
+Receipts include:
+- created_at
+- updated_at
+- deleted_at (soft delete)
+
+This enables auditing and safe recovery.
+
+------------------------------------------------------------
+6. PERFORMANCE AT SCALE
+------------------------------------------------------------
+Concern:
+Repeated monthly aggregations over raw line items do not scale.
+
+Improvement:
+A materialized view (monthly_user_totals) pre-aggregates
+monthly spending per user.
+
+This can be refreshed on demand or via a scheduler.
+
+------------------------------------------------------------
+7. SEARCH & UX
+------------------------------------------------------------
+Concern:
+Searching receipts by description does not scale with LIKE queries.
+
+Improvement:
+Full-text search index on line item descriptions using GIN.
+
+------------------------------------------------------------
+8. DISPLAY STABILITY
+------------------------------------------------------------
+Concern:
+Line items may appear in inconsistent order.
+
+Improvement:
+A position column ensures stable ordering for UI and OCR imports.
+
+------------------------------------------------------------
+SUMMARY
+------------------------------------------------------------
+The base schema remains intentionally simple.
+These improvements:
+- prevent data leaks
+- enforce correctness
+- scale analytics
+- support future features
+
+The result is a robust, production-ready backend
+without premature complexity.

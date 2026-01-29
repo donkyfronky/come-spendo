@@ -1,0 +1,173 @@
+---
+alwaysApply: true
+---
+
+# Project Stack
+
+## Overview
+This document outlines the technology stack and tools used in the project.
+
+## Core Framework & Runtime
+
+### React
+- **Version**: 19.2.0
+- **Description**: Modern UI library for building user interfaces
+- **Package**: `react`, `react-dom`
+
+### TypeScript
+- **Version**: ~5.9.3
+- **Description**: Typed superset of JavaScript
+- **Package**: `typescript`
+
+## Build Tools & Bundler
+
+### Vite
+- **Version**: ^7.2.4
+- **Description**: Next-generation frontend build tool
+- **Plugins**:
+  - `@vitejs/plugin-react`: React plugin
+  - `@tailwindcss/vite`: Tailwind CSS integration
+
+## Styling
+
+### Tailwind CSS
+- **Version**: ^4.1.18
+- **Description**: Utility-first CSS framework
+- **Package**: `tailwindcss`, `@tailwindcss/vite`
+- **Utilities**:
+  - `tailwind-merge`: ^3.4.0 - Merge Tailwind classes intelligently
+  - `tw-animate-css`: ^1.4.0 - CSS animations for Tailwind
+
+## UI Components & Libraries
+
+### shadcn/ui
+- **Description**: Re-usable component library built on Radix UI and Tailwind CSS
+- **Script**: `npx shadcn@latest add`
+
+### Radix UI
+- **Version**: ^1.2.4
+- **Package**: `@radix-ui/react-slot`, `@radix-ui/react-dialog`, `@radix-ui/react-dropdown-menu`, `@radix-ui/react-label`, `@radix-ui/react-progress`, `@radix-ui/react-switch`
+- **Description**: Low-level UI primitives
+
+### Lucide React
+- **Version**: ^0.562.0
+- **Description**: Beautiful & consistent icon toolkit
+
+### Utility Libraries
+- **clsx**: ^2.1.1 - Conditional className utility
+- **class-variance-authority**: ^0.7.1 - Component variant management
+
+### Routing
+- **React Router**: ^7.12.0 - Client-side routing
+
+### Notifications
+- **Sonner**: ^2.0.7 - Toast notifications
+
+## Backend & Data
+
+### Supabase
+- **SDK**: `@supabase/supabase-js` ^2.91.0
+- **Description**: Auth + database access for the backend
+
+### Supabase Local Development
+- **Config**: `supabase/config.toml` - Local Supabase setup
+- **Migrations**: `supabase/migrations/*.sql` - Schema changes and API callbacks
+- **Seed Data**: `supabase/seed.sql` - Local seed data
+
+## State Management
+
+### Redux Toolkit
+- **Version**: ^2.11.2
+- **Description**: Official Redux toolkit for efficient state management
+- **Package**: `@reduxjs/toolkit`
+- **Features**:
+  - Redux Thunk middleware included by default
+  - CreateSlice for simplified reducer logic
+  - ConfigureStore with good defaults
+  - TypeScript support out of the box
+
+### React Redux
+- **Version**: ^9.2.0
+- **Description**: Official React bindings for Redux
+- **Package**: `react-redux`
+- **Usage**: Provider component and hooks for React integration
+
+### Redux Store Structure
+- **Store Location**: `src/store/`
+- **Store Config**: `src/store/index.ts` - Store configuration and typed hooks
+- **Slices**: `src/store/slices/*.slice.ts` - Auth and categories state
+- **Selectors**: `src/store/selectors/` - Typed selectors
+- **Types**: `src/store/types.ts`
+
+### State Management Features
+- **Authentication State**: User, session, status, and error states
+- **Async Thunks**: Login, retrieve user, and logout actions
+- **Typed Hooks**: `useAppDispatch` and `useAppSelector`
+- **Type Safety**: Full TypeScript support with typed hooks and actions
+
+## Code Quality & Linting
+
+### ESLint
+- **Version**: ^9.39.2
+- **Configuration**: Flat config (`@eslint/js`)
+- **Plugins**:
+  - `eslint-plugin-react-hooks`: ^7.0.1
+  - `eslint-plugin-react-refresh`: ^0.4.24
+  - `typescript-eslint`: ^8.46.4
+- **Config**: `eslint-config-prettier` ^10.1.8
+- **Globals**: `globals` ^16.5.0
+
+### Prettier
+- **Version**: ^3.8.0
+- **Description**: Code formatter
+
+## Git Hooks & Workflow
+
+### Husky
+- **Version**: ^9.1.7
+- **Description**: Git hooks made easy
+
+### lint-staged
+- **Version**: ^16.2.7
+- **Description**: Run linters on git staged files
+- **Configuration**: Runs `yarn test,  yarn lint-staged` on staged files
+
+## Testing
+
+### Vitest
+- **Version**: ^4.0.17
+- **Description**: Fast unit test framework powered by Vite
+
+## Package Manager
+
+### Yarn
+- **Version**: 4.5.0
+- **Description**: Fast, reliable, and secure dependency management
+- **Lock file**: `yarn.lock`
+
+## Project Structure
+
+- **Module Type**: ES Modules (`"type": "module"`)
+- **Path Aliases**: `@/*` → `./src/*`
+- **Build Output**: TypeScript compilation + Vite build
+
+## Scripts
+
+- `dev`: Start development server
+- `build`: Type check and build for production
+- `lint`: Run ESLint
+- `test`: Run Vitest tests
+- `preview`: Preview production build
+- `prepare`: Setup Husky git hooks
+- `shadcn`: Add shadcn/ui components
+- `gen-types`: Generate Supabase TypeScript types
+
+## Development Tools
+
+- **Node Types**: `@types/node` ^25.0.9
+- **React Types**: `@types/react` ^19.2.5, `@types/react-dom` ^19.2.3
+
+---
+
+## Entry point
+- `main.tsx`: is the file where React is loaded. Here place application provider when needed
